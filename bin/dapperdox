@@ -1,0 +1,11 @@
+#! /bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+dapperdox="${SCRIPT_DIR}/../.deps/dapperdox/dapperdox"
+
+"${dapperdox}" \
+  -default-assets-dir "${SCRIPT_DIR}/../.deps/dapperdox/assets/" \
+  -spec-dir "${SCRIPT_DIR}/../" \
+  -spec-filename "swagger.yaml" \
+  -theme="dapperdox-theme-gov-uk" \
+  -theme-dir="${SCRIPT_DIR}/../.deps/"

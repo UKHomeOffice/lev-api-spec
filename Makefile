@@ -3,8 +3,11 @@ os = linux
 dapperdox-version = 1.1.1
 
 test-url = http://localhost/
+token = DUMMY
+username = test
+client = test
 
-.PHONY: all clean listen test deps dapperbox dapperbox-theme-gov-uk dredd npm
+.PHONY: all clean dapperbox dapperbox-theme-gov-uk deps deps-listen deps-test dredd docker docker-test listen npm test
 
 all: deps test listen
 
@@ -13,13 +16,28 @@ clean:
 	rm -rf ".deps/node_modules/"
 	rm -f "bin/dredd"
 
-listen: dapperdox dapperdox-theme-gov-uk
+listen: deps-listen
 	bin/dapperdox
 
-test: dredd
-	bin/dredd "./swagger.yaml" "$(test-url)" -h "X-Auth-Username: test" -h "X-Auth-Aud: test"
+test: deps-test
+	bin/dredd "./swagger.yaml" "$(test-url)" \
+	          -h "Authorization: Bearer $(token)" \
+	          -h "X-Auth-Username: $(username)" \
+	          -h "X-Auth-Aud: $(client)"
 
-deps: dapperdox dapperdox-theme-gov-uk dredd
+docker: docker-test
+
+docker-test: deps-test
+	docker build \
+	       -t lev-api-test \
+	       -f ./test.Dockerfile \
+	       .
+
+deps: deps-listen deps-test
+
+deps-listen: dapperdox dapperdox-theme-gov-uk
+
+deps-test: dredd
 
 dapperdox: .deps/dapperdox
 

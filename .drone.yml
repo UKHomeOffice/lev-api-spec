@@ -6,7 +6,8 @@ pipeline:
       - DOCKER_HOST=tcp://172.17.0.1:2375
       - DOCKER_IMAGE=lev-api-test
     commands:
-      - docker build -f ./test.Dockerfile -t "$${DOCKER_IMAGE}" .
+      - apk add --no-cache git make nodejs-npm python
+      - make docker-test
     when:
       event: pull_request
 
@@ -16,7 +17,9 @@ pipeline:
       - DOCKER_HOST=tcp://172.17.0.1:2375
       - DOCKER_IMAGE=lev-api-test
     commands:
-      - docker build -f ./test.Dockerfile -t "$${DOCKER_IMAGE}:$${DRONE_TAG}" .
+      - apk add --no-cache git make nodejs-npm python
+      - make docker-test
+      - docker tag "$${DOCKER_IMAGE}" "$${DOCKER_IMAGE}:$${DRONE_TAG}"
     when:
       event: tag
 

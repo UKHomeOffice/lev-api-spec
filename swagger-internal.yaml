@@ -1,0 +1,22 @@
+'#/':
+  $ref: ./swagger.yaml
+'#/host': "localhost"
+'#/schemes':
+  $assign:
+  - "http"
+'#/security':
+  $assign:
+  - ClientID: []
+    Username: []
+'#/securityDefinitions':
+  $assign:
+    ClientID:
+      type: apiKey
+      in: header
+      name: X-Auth-Aud
+      example: test
+    Username:
+      type: apiKey
+      in: header
+      name: X-Auth-Username
+      example: test

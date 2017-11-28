@@ -7,7 +7,7 @@ token = DUMMY
 username = test
 client = test
 
-.PHONY: all clean dapperbox dapperbox-theme-gov-uk deps deps-listen deps-test dredd docker docker-test listen npm test
+.PHONY: all clean dapperbox dapperbox-theme-gov-uk deps deps-listen deps-test dredd docker docker-test got-swag listen npm test
 
 all: deps test listen
 
@@ -15,15 +15,21 @@ clean:
 	rm -rf ".deps/dapperdox"*
 	rm -rf ".deps/node_modules/"
 	rm -f "bin/dredd"
+	rm -f "bin/got-swag"
 
 listen: deps-listen
 	bin/dapperdox
 
-test: deps-test
+test: deps-test contract-test monkey-test
+
+contract-test: dredd
 	bin/dredd "./swagger.yaml" "$(test-url)" \
 	          -h "Authorization: Bearer $(token)" \
 	          -h "X-Auth-Username: $(username)" \
 	          -h "X-Auth-Aud: $(client)"
+
+monkey-test: got-swag
+	bin/got-swag "./swagger-internal.yaml" -m
 
 docker: docker-test
 
@@ -37,7 +43,7 @@ deps: deps-listen deps-test
 
 deps-listen: dapperdox dapperdox-theme-gov-uk
 
-deps-test: dredd
+deps-test: dredd got-swag
 
 dapperdox: .deps/dapperdox
 
@@ -61,7 +67,13 @@ bin/dredd: .deps/node_modules/.bin/dredd
 	mkdir -p "bin"
 	ln -fs "../.deps/node_modules/.bin/dredd" "bin/dredd"
 
-.deps/node_modules/.bin/dredd:
+.deps/node_modules/.bin/%:
 	mkdir -p ".deps"
 	cd ".deps" \
 		&& npm install
+
+got-swag: bin/got-swag
+
+bin/got-swag: .deps/node_modules/.bin/got-swag
+	mkdir -p "bin"
+	ln -fs "../.deps/node_modules/.bin/got-swag" "bin/got-swag"

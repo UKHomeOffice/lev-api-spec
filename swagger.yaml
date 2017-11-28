@@ -245,9 +245,6 @@ paths:
               
                 }
               }]
-      security:
-      - lev_auth:
-        - "audit"
   /api/v0/events/birth/{systemNumber}:
     get:
       tags:
@@ -334,9 +331,6 @@ paths:
                 "previousRegistration": {
                 }
               }
-      security:
-      - lev_auth:
-        - "audit"
   /api/v0/audit/user-activity:
     get:
       summary: "Query user activity"
@@ -372,10 +366,12 @@ paths:
                 }
               }
       security:
-      - lev_auth:
+      - OAuth2:
         - "audit"
+security:
+  - OAuth2: []
 securityDefinitions:
-  lev_auth:
+  OAuth2:
     type: "oauth2"
     authorizationUrl: "https://sso.digital.homeoffice.gov.uk/auth/realms/lev/protocol/openid-connect/auth"
     flow: "implicit"
@@ -726,6 +722,6 @@ definitions:
       description: An event that represents a change of state
   v0-Births:
     type: "array"
-    title: "List of birth record events
+    title: "List of birth record events"
     items:
       $ref: "#/definitions/v0-Birth"

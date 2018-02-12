@@ -19,12 +19,14 @@ probe_api="curl -fs '${TEST_URL}/readiness' &> /dev/null"
 
 if [ -n "${WAIT}" ]; then
     echo "Waiting until server is ready..."
-	  eval "${probe_api}";
+    set +e
+    eval "${probe_api}";
     while [ $? -ne 0 ]; do
         echo ...;
         sleep 5;
         eval "${probe_api}";
     done;
+    set -e
     echo "Done."
 fi
 

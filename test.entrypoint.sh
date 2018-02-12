@@ -8,11 +8,25 @@ USERNAME="${USERNAME:-test}"
 PASSWORD="${PASSWORD}"
 CLIENT_ID="${CLIENT_ID:-test}"
 CLIENT_SECRET="${CLIENT_SECRET}"
+WAIT="${WAIT}"
 
 DEBUG="${DEBUG}"
 
 dredd="./bin/dredd ./swagger.yaml ${TEST_URL}"
 token="DUMMY"
+
+probe_api="curl -fs '${TEST_URL}/readiness' &> /dev/null"
+
+if [ -n "${WAIT}" ]; then
+    echo "Waiting until server is ready..."
+	  eval "${probe_api}";
+    while [ $? -ne 0 ]; do
+        echo ...;
+        sleep 5;
+        eval "${probe_api}";
+    done;
+    echo "Done."
+fi
 
 if [ -n  "${OIDC_URL}" ]; then
   echo "Requesting access token from ${OIDC_URL} for user, '${USERNAME}', as client, '${CLIENT_ID}'..."

@@ -9,6 +9,7 @@
   "author": "Daniel A.C. Martin <npm@daniel-martin.co.uk> (http://daniel-martin.co.uk/)",
   "license": "MIT",
   "dependencies": {
-    "dredd": "^4.5.0"
+    "dredd": "^4.5.0",
+    "got-swag": "^1.2.0"
   }
 }

@@ -1,23 +1,16 @@
-FROM node:9-alpine
+FROM node:8-alpine
 
 RUN apk add --no-cache curl jq \
- && apk upgrade --no-cache \
- && addgroup -S "app" \
- && adduser -Sh "/app" "app" "app"
+ && apk upgrade --no-cache
 
-USER app
-WORKDIR /app
+WORKDIR /home/node
 
 RUN mkdir -p ./bin/
-
 COPY ./.deps/node_modules/ ./.deps/node_modules/
 RUN ln -fs "../.deps/node_modules/.bin/dredd" "bin/dredd"
 COPY ./test.entrypoint.sh ./entrypoint.sh
 COPY ./swagger.yaml ./swagger.yaml
+RUN chown -R "node:node" .
 
-USER root
-RUN chown -R "app:app" . \
- && apk upgrade --no-cache
-
-USER app
+USER node
 CMD ["./entrypoint.sh"]

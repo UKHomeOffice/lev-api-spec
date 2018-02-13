@@ -15,6 +15,10 @@ DEBUG="${DEBUG}"
 dredd="./bin/dredd ./swagger.yaml ${TEST_URL}"
 token="DUMMY"
 
+function esc {
+    echo "${1//&/\\&}"
+}
+
 probe_api="curl -fs '${TEST_URL}/readiness' &> /dev/null"
 
 if [ -n "${WAIT}" ]; then
@@ -32,9 +36,9 @@ fi
 
 if [ -n  "${OIDC_URL}" ]; then
   echo "Requesting access token from ${OIDC_URL} for user, '${USERNAME}', as client, '${CLIENT_ID}'..."
-  payload=`curl "${OIDC_URL}/token" -X POST \
+  payload=$(curl -f "${OIDC_URL}/token" -X POST \
               -H "Accept: */*" \
-              -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&username=${USERNAME}&password=${PASSWORD}&grant_type=password"`
+              -d "client_id=`esc ${CLIENT_ID}`&client_secret=`esc ${CLIENT_SECRET}`&username=`esc ${USERNAME}`&password=`esc ${PASSWORD}`&grant_type=password")
   [ -n "${DEBUG}" ] && echo "Received payload: ${payload}"
   token=`echo "${payload}" | jq -rM ".access_token"`
   [ -n "${DEBUG}" ] && echo "Parsed out token: ${token}"

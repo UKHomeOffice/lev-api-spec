@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 set -e
 
@@ -36,7 +36,7 @@ fi
 
 if [ -n  "${OIDC_URL}" ]; then
   echo "Requesting access token from ${OIDC_URL} for user, '${USERNAME}', as client, '${CLIENT_ID}'..."
-  payload=$(curl -f "${OIDC_URL}/token" -X POST \
+  payload=$(curl -fs "${OIDC_URL}/token" -X POST \
               -H "Accept: */*" \
               -d "client_id=`esc ${CLIENT_ID}`&client_secret=`esc ${CLIENT_SECRET}`&username=`esc ${USERNAME}`&password=`esc ${PASSWORD}`&grant_type=password")
   [ -n "${DEBUG}" ] && echo "Received payload: ${payload}"

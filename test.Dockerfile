@@ -1,7 +1,7 @@
 FROM node:8-alpine
 
-RUN apk add --no-cache curl jq \
- && apk upgrade --no-cache
+RUN apk add -q --no-cache bash curl jq \
+ && apk upgrade -q --no-cache
 
 WORKDIR /home/node
 

@@ -1,40 +1,34 @@
+matrix:
+  NAME:
+    - docs
+    - test
+  NAME_PREFIX:
+    - ukhomeofficedigital/lev-api-
+  DOCKER_USERNAME:
+    - ukhomeofficedigital+lev_api_spec
+  DOCKER_REPO:
+    - quay.io
 pipeline:
-
-  build_image_pr:
-    image: docker:17.09.0-ce
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-      - DOCKER_IMAGE=lev-api-test
+  deps:
+    image: quay.io/ukhomeofficedigital/lev-ci
     commands:
-      - apk add --no-cache git make nodejs-npm python
-      - make docker-test
+      - make deps-${NAME}
+    when:
+      event: [ pull_request, tag ]
+  build_image:
+    image: ukhomeoffice/drone-docker
+    dockerfile: '${NAME}.Dockerfile'
+    repo: '${DOCKER_REPO}/${NAME_PREFIX}${NAME}'
+    dry_run: true
     when:
       event: pull_request
-
-  build_image_tag:
-    image: docker:17.09.0-ce
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-      - DOCKER_IMAGE=lev-api-test
-    commands:
-      - apk add --no-cache git make nodejs-npm python
-      - make docker-test
-      - docker tag "$${DOCKER_IMAGE}" "$${DOCKER_IMAGE}:$${DRONE_TAG}"
-    when:
-      event: tag
-
-  push_image:
-    image: docker:17.09.0-ce
-    secrets:
-      - docker_quay_password
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-      - DOCKER_IMAGE=lev-api-test
-      - DOCKER_REPO=quay.io
-      - DOCKER_BASEDIR=/ukhomeofficedigital/
-      - DOCKER_USERNAME=ukhomeofficedigital+lev_api_spec
-    commands:
-      - docker login -u="$${DOCKER_USERNAME}" -p="$${DOCKER_QUAY_PASSWORD}" "$${DOCKER_REPO}"
-      - ./publish.sh "$${DOCKER_IMAGE}:$${DRONE_TAG}" "$${DOCKER_REPO}$${DOCKER_BASEDIR}$${DOCKER_IMAGE}" "$${DRONE_TAG}"
+  push_image_to_quay:
+    image: ukhomeoffice/drone-docker
+    dockerfile: '${NAME}.Dockerfile'
+    repo: '${DOCKER_REPO}/${NAME_PREFIX}${NAME}'
+    auto_tag: true
+    secrets: [ docker_password ]
+    username: '${DOCKER_USERNAME}'
+    registry: '${DOCKER_REPO}'
     when:
       event: tag

@@ -22,7 +22,7 @@ pipeline:
     dry_run: true
     when:
       event: pull_request
-  push_image_to_quay:
+  push_image:
     image: ukhomeoffice/drone-docker
     dockerfile: '${NAME}.Dockerfile'
     repo: '${DOCKER_REPO}/${NAME_PREFIX}${NAME}'

@@ -7,16 +7,16 @@ token = DUMMY
 username = test
 client = test
 
-.PHONY: all clean dapperbox dapperbox-theme-gov-uk deps deps-listen deps-test dredd docker docker-test listen npm test
+.PHONY: all clean dapperbox dapperbox-theme-gov-uk deps deps-docs deps-test dredd docker docker-docs docker-test docs npm test
 
-all: deps test listen
+all: deps test docs
 
 clean:
 	rm -rf ".deps/dapperdox"*
 	rm -rf ".deps/node_modules/"
 	rm -f "bin/dredd"
 
-listen: deps-listen
+docs: deps-docs
 	bin/dapperdox
 
 test: deps-test
@@ -25,7 +25,13 @@ test: deps-test
 	          -h "X-Auth-Username: $(username)" \
 	          -h "X-Auth-Aud: $(client)"
 
-docker: docker-test
+docker: docker-docs docker-test
+
+docker-docs: deps-docs
+	docker build \
+	       -t lev-api-docs \
+	       -f ./docs.Dockerfile \
+	       .
 
 docker-test: deps-test
 	docker build \
@@ -33,9 +39,9 @@ docker-test: deps-test
 	       -f ./test.Dockerfile \
 	       .
 
-deps: deps-listen deps-test
+deps: deps-docs deps-test
 
-deps-listen: dapperdox dapperdox-theme-gov-uk
+deps-docs: dapperdox dapperdox-theme-gov-uk
 
 deps-test: dredd
 

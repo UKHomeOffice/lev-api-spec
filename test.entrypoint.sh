@@ -4,9 +4,9 @@ set -e
 
 TEST_URL="${TEST_URL:-http://localhost/}"
 OIDC_URL="${OIDC_URL}"
-USERNAME="${USERNAME:-test}"
+USERNAME="${USERNAME:-${USER:-test}}"
 PASSWORD="${PASSWORD}"
-CLIENT_ID="${CLIENT_ID:-test}"
+CLIENT_ID="${CLIENT_ID:-dredd}"
 CLIENT_SECRET="${CLIENT_SECRET}"
 WAIT="${WAIT}"
 

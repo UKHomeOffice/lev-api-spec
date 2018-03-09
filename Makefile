@@ -4,8 +4,8 @@ dapperdox-version = 1.1.1
 
 test-url = http://localhost/
 token = DUMMY
-username = test
-client = test
+username = $(USER)
+client = dredd
 
 .PHONY: all clean dapperbox dapperbox-theme-gov-uk deps deps-docs deps-test dredd docker docker-docs docker-test docs npm test
 

@@ -8,6 +8,7 @@ EXPOSE 3123
 COPY .deps/dapperdox /
 COPY .deps/dapperdox-theme-gov-uk /assets/themes/gov-uk
 
+COPY assets/ /assets
 COPY swagger.yaml /spec/
 
 USER notroot

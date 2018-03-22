@@ -5,6 +5,7 @@ dapperdox="${SCRIPT_DIR}/../.deps/dapperdox/dapperdox"
 
 "${dapperdox}" \
   -default-assets-dir "${SCRIPT_DIR}/../.deps/dapperdox/assets/" \
+  -assets-dir "${SCRIPT_DIR}/../assets/" \
   -spec-dir "${SCRIPT_DIR}/../" \
   -spec-filename "swagger.yaml" \
   -theme="dapperdox-theme-gov-uk" \

@@ -9,4 +9,6 @@ dapperdox="${SCRIPT_DIR}/../.deps/dapperdox/dapperdox"
   -spec-dir "${SCRIPT_DIR}/../" \
   -spec-filename "swagger.yaml" \
   -theme="dapperdox-theme-gov-uk" \
-  -theme-dir="${SCRIPT_DIR}/../.deps/"
+  -theme-dir="${SCRIPT_DIR}/../.deps/" \
+  -spec-rewrite-url="api.lev.homeoffice.gov.uk=localhost:8080" \
+  -document-rewrite-url="api.lev.homeoffice.gov.uk=localhost:8080"

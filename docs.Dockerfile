@@ -12,4 +12,4 @@ COPY assets/ /assets
 COPY swagger.yaml /spec/
 
 USER 1
-ENTRYPOINT ["/dapperdox", "--spec-filename=swagger.yaml", "--theme=gov-uk"]
+ENTRYPOINT ["/dapperdox", "--spec-filename=swagger.yaml", "--theme=gov-uk", "--assets-dir", "assets"]

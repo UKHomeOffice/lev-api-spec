@@ -47,6 +47,32 @@ Authorization: Bearer YOUR_TOKEN
 Where `YOUR_TOKEN` must be obtained, via [OpenID Connect], from our authentication server, https://sso.digital.homeoffice.gov.uk/auth/realms/lev/.well-known/openid-configuration . The exact authentication 'flow' you use will depend on what you have agreed with us.
 
 
+### Example: Resource Owner Password Credentials grant flow
+
+The [Resource Owner Password Credentials grant] flow is one of the simpler flows and so it serves as a useful example of obtaining a token. (Though for full details one should read up on [OpenID Connect].) Provided you have both [cURL] and [jq] available it is possible to obtain a token as follows:
+
+```bash
+curl -fsS \
+     -d 'client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&username=SOME_USER&password=SOME_USERS_PASSWORD&grant_type=password' \
+     'https://sso.digital.homeoffice.gov.uk/auth/realms/lev/protocol/openid-connect/token' | jq -r '.access_token'
+```
+
+
+Making an authenticated request
+-------------------------------
+
+Once you have an access token, you can make requests to the API as follows:
+
+```bash
+curl -i \
+     --cert './PATH/TO/YOUR-CLIENT.crt' \
+     --key './PATH/TO/YOUR-CLIENT.key' \
+     -H 'Authorization: Bearer YOUR_TOKEN' \
+     'https://api.lev.homeoffice.gov.uk/api/v0/events/birth?forenames=John&lastname=Smith&dateofbirth=2010-01-01'
+```
+
+For full details on the endpoints available see [the specification].
+
 Authenticating against the mock
 -------------------------------
 
@@ -61,4 +87,8 @@ Both of these can simply be set to dummy values to ease testing. The client cert
 [An OAuth2 bearer token]: #oauth2-bearer-token
 [OAuth2]: https://oauth.net/2/
 [OpenID Connect]: https://www.keycloak.org/docs/3.3/server_admin/topics/sso-protocols/oidc.html
+[Resource Owner Password Credentials grant]: https://tools.ietf.org/html/rfc6749#section-4.3
+[cURL]: https://curl.haxx.se/
+[jq]: https://stedolan.github.io/jq/
 [mock API]: ./Mock
+[the specification]: /

@@ -68,7 +68,7 @@ curl -i \
      --cert './PATH/TO/YOUR-CLIENT.crt' \
      --key './PATH/TO/YOUR-CLIENT.key' \
      -H 'Authorization: Bearer YOUR_TOKEN' \
-     'https://api.lev.homeoffice.gov.uk/api/v0/events/birth?forenames=John&lastname=Smith&dateofbirth=2010-01-01'
+     'https://api.lev.homeoffice.gov.uk/api/v0/events/birth?forenames=Joan&lastname=Smith&dateofbirth=2008-08-08'
 ```
 
 For full details on the endpoints available see [the specification].

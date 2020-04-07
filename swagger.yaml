@@ -53,6 +53,8 @@ responses:
 tags:
 - name: "birth"
   description: "Birth records"
+- name: "death"
+  description: "Death records"
 paths:
   /api/v0/events/birth:
     get:
@@ -437,6 +439,67 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/v1-Birth"
+  /v1/registration/death:
+    get:
+      tags:
+      - "death"
+      - "v1"
+      - "unstable"
+      summary: "Search for death records"
+      description: "Search for death records by supplying the surname, at least the first forename and either the date of birth or the date of death of the deceased. (UNSTABLE: This endpoint is subject to change.)"
+      operationId: "searchV1Death"
+      parameters:
+      - name: "forenames"
+        in: "query"
+        description: "The deceased's forenames. The first name must be provided but middlenames are optional."
+        required: true
+        type: "string"
+        x-example: "Joan"
+      - name: "surname"
+        in: "query"
+        description: "The deceased's surname."
+        required: true
+        type: "string"
+        x-example: "Smith"
+      - name: "date"
+        in: "query"
+        description: "The deceased's date of birth or death in international format."
+        required: true
+        type: "string"
+        format: "date"
+        x-example: "2008-08-08"
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v1-Deaths"
+  /v1/registration/death/{id}:
+    get:
+      tags:
+      - "death"
+      - "v1"
+      - "unstable"
+      summary: "Look up a specific death record"
+      description: "Look up individual death records using the `systemNumber` printed in the bottom-left of the death certificate. (UNSTABLE: This endpoint is subject to change.)"
+      operationId: "readV1Death"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The system number printed in the bottom-left of the death certificate"
+        required: true
+        type: "integer"
+        x-example: 123456789
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        404:
+          $ref: "#/responses/notFound"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v1-Death"
   /api/v0/audit/user-activity:
     get:
       summary: "Query user activity"
@@ -1022,6 +1085,107 @@ definitions:
               - Replacement registration
               - Other
               - Subsequently married
+  v1-Death:
+    type: object
+    title: "Death record (v1)"
+    description: "A record of a death"
+    required:
+      - id
+      - date
+      - deceased
+      - status
+    properties:
+      id:
+        type: integer
+        format: int32
+        title: "ID"
+        description: System number for this event
+      date:
+        type: string
+        format: date
+        example: '2011-08-09'
+        title: "Date"
+        description: Date the death was registered
+      deceased:
+        title: "Deceased"
+        description: The person that died
+        required:
+          - forenames
+          - surname
+          - dateOfDeath
+          - sex
+        properties:
+          forenames:
+            type: string
+            example: Joan Narcissus Ouroboros
+            title: "forenames"
+            description: Forenames of the deceased
+          surname:
+            type: string
+            example: SMITH
+            title: "Surname"
+            description: Surname of the deceased
+          dateOfBirth:
+            type: string
+            format: date
+            example: '2011-08-08'
+            title: "Date of birth"
+            description: Date the deceased was born
+          dateOfDeath:
+            type: string
+            format: date
+            example: '2011-08-08'
+            title: "Date of death"
+            description: Date the person died
+          sex:
+            type: string
+            example: Indeterminate
+            title: "Sex"
+            description: Sex of the deceased
+            enum:
+              - Male
+              - Female
+              - Indeterminate
+          birthplace:
+            type: string
+            example: Kensington
+            title: "Birthplace"
+            description: The birthplace of the deceased
+          deathplace:
+            type: string
+            example: Kensington
+            title: "Deathplace"
+            description: The place the person died
+          occupation:
+            type: string
+            example: Unemployed
+            title: "Occupation"
+            description: The occupation of the deceased
+          address:
+            type: string
+            example: '888 Death House, 8 Death lane, Deadington, Deadshire'
+            title: "Address"
+            description: "The deceased's address"
+          retired:
+            type: boolean
+            example: true
+            title: "Retired"
+            description: Whether the deceased was retired
+          maidenSurname:
+            type: string
+            example: BLACK
+            title: "Maiden surname"
+            description: Maiden name of the deceased
+      status:
+        title: "Status"
+        description: Status flags associated with this record
+        required:
+          - blocked
+        properties:
+          blocked:
+            type: boolean
+            title: "Blocked registration"
+            description: Indicates if data for this record has been blocked
   v0-Births:
     type: "array"
     title: "List of (v0) birth records"
@@ -1032,3 +1196,8 @@ definitions:
     title: "List of (v1) birth records"
     items:
       $ref: "#/definitions/v1-Birth"
+  v1-Deaths:
+    type: "array"
+    title: "List of (v1) death records"
+    items:
+      $ref: "#/definitions/v1-Death"

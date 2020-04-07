@@ -58,6 +58,7 @@ paths:
     get:
       tags:
       - "birth"
+      - "v0"
       summary: "Search for birth records"
       description: "Search for birth records by supplying the date of birth, surname and at least the first forename of the child."
       operationId: "searchBirth"
@@ -290,6 +291,7 @@ paths:
     get:
       tags:
       - "birth"
+      - "v0"
       summary: "Look up a specific birth record"
       description: "Look up individual birth records using the `systemNumber` printed in the bottom-left of the birth certificate."
       operationId: "readBirth"
@@ -374,6 +376,67 @@ paths:
                 "previousRegistration": {
                 }
               }
+  /v1/registration/birth:
+    get:
+      tags:
+      - "birth"
+      - "v1"
+      - "unstable"
+      summary: "Search for birth records"
+      description: "Search for birth records by supplying the date of birth, surname and at least the first forename of the child. (UNSTABLE: This endpoint is subject to change.)"
+      operationId: "searchV1Birth"
+      parameters:
+      - name: "forenames"
+        in: "query"
+        description: "The child's forenames. The first name must be provided but middlenames are optional."
+        required: true
+        type: "string"
+        x-example: "Joan"
+      - name: "surname"
+        in: "query"
+        description: "The child's surname."
+        required: true
+        type: "string"
+        x-example: "Smith"
+      - name: "dateOfBirth"
+        in: "query"
+        description: "The child's date of birth in international format."
+        required: true
+        type: "string"
+        format: "date"
+        x-example: "2008-08-08"
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v1-Births"
+  /v1/registration/birth/{id}:
+    get:
+      tags:
+      - "birth"
+      - "v1"
+      - "unstable"
+      summary: "Look up a specific birth record"
+      description: "Look up individual birth records using the `systemNumber` printed in the bottom-left of the birth certificate. (UNSTABLE: This endpoint is subject to change.)"
+      operationId: "readV1Birth"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The system number printed in the bottom-left of the birth certificate"
+        required: true
+        type: "integer"
+        x-example: 123456789
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        404:
+          $ref: "#/responses/notFound"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v1-Birth"
   /api/v0/audit/user-activity:
     get:
       summary: "Query user activity"
@@ -770,8 +833,202 @@ definitions:
             format: int32
             title: "System number"
             description: System number for this event
+  v1-Birth:
+    type: object
+    title: "Birth record (v1)"
+    description: "A record of a birth"
+    required:
+      - id
+      - date
+      - child
+      - mother
+      - father
+      - status
+    properties:
+      id:
+        type: integer
+        format: int32
+        title: "ID"
+        description: System number for this event
+      date:
+        type: string
+        format: date
+        example: '2011-08-09'
+        title: "Date"
+        description: Date the birth was registered
+      child:
+        title: "Child"
+        description: The child that was born
+        required:
+          - forenames
+          - surname
+          - dateOfBirth
+          - sex
+        properties:
+          forenames:
+            type: string
+            example: Joan Narcissus Ouroboros
+            title: "forenames"
+            description: Forenames of the child
+          originalForenames:
+            type: string
+            example: John Narcissus Ouroboros
+            title: "forenames"
+            description: The forenames originally given to the child before they were changed
+          surname:
+            type: string
+            example: SMITH
+            title: "Surname"
+            description: Surname of the child
+          dateOfBirth:
+            type: string
+            format: date
+            example: '2011-08-08'
+            title: "Date of birth"
+            description: Date of birth of the child
+          sex:
+            type: string
+            example: Indeterminate
+            title: "Sex"
+            description: Sex of the child
+            enum:
+              - Male
+              - Female
+              - Indeterminate
+          birthplace:
+            type: string
+            example: Kensington
+            title: "Birthplace"
+            description: The birthplace of the child
+      mother:
+        title: "Mother"
+        description: The mother of the child that was born
+        required:
+          - forenames
+          - surname
+        properties:
+          forenames:
+            type: string
+            example: Joan Narcissus Ouroboros
+            title: "forenames"
+            description: Forenames of the mother
+          surname:
+            type: string
+            example: SMITH
+            title: "Surname"
+            description: Surname of the mother
+          maidenSurname:
+            type: string
+            example: BLACK
+            title: "Maiden surname"
+            description: Maiden name of the mother
+          marriageSurname:
+            type: string
+            example: WHITE
+            title: "Marriage surname"
+            description: Surname of the mother at marriage (if different from her maiden name)
+          birthplace:
+            type: string
+            example: Kensington
+            title: "Birthplace"
+            description: The birthplace of the mother
+          occupation:
+            type: string
+            example: Carpenter
+            title: "Occupation"
+            description: The occupation of the mother
+          address:
+            type: string
+            example: '34 Matriarchs Place, Mumstown, Mumford'
+            title: "Address"
+            description: "The mother's usual address (if different from the place of child's birth)"
+      father:
+        title: "Father"
+        description: The father of the child that was born
+        required:
+          - deceased
+        properties:
+          forenames:
+            type: string
+            example: Joan Narcissus Ouroboros
+            title: "forenames"
+            description: Forenames of the father
+          surname:
+            type: string
+            example: SMITH
+            title: "Surname"
+            description: Surname of the father
+          birthplace:
+            type: string
+            example: Kensington
+            title: "Birthplace"
+            description: The birthplace of the father
+          occupation:
+            type: string
+            example: Carpenter
+            title: "Occupation"
+            description: The occupation of the father
+          deceased:
+            type: boolean
+            example: false
+            title: "Deceased"
+            description: Whether the father was deceased at the point of birth
+      status:
+        title: "Status"
+        description: Status flags associated with this record
+        required:
+          - blocked
+        properties:
+          blocked:
+            type: boolean
+            title: "Blocked registration"
+            description: Indicates if data for this record has been blocked
+          cancelled:
+            type: boolean
+            title: "Cancelled"
+            description: Indicates if record was cancelled
+          correction:
+            type: string
+            title: "Correction"
+            description: Indicates if there has been a correction to this record
+            enum:
+              - Typographical
+              - Simple clerical
+              - Complex clerical
+              - Error of fact
+              - None
+          marginalNote:
+            type: string
+            title: "Marginal note"
+            description: Gives additional notes on a record
+            enum:
+              - Re-registered
+              - Court order in place
+              - Court order revoked
+              - Other
+              - None
+          potentiallyFictitiousBirth:
+            type: boolean
+            title: "Potentially fictitious birth"
+            description: Indicates if a birth may be fictitious
+          reregistration:
+            type: string
+            title: "Reregistration"
+            description: Describes if this is a reregistration and why it was needed
+            enum:
+              - None
+              - Father modified
+              - Father added
+              - Replacement registration
+              - Other
+              - Subsequently married
   v0-Births:
     type: "array"
     title: "List of (v0) birth records"
     items:
       $ref: "#/definitions/v0-Birth"
+  v1-Births:
+    type: "array"
+    title: "List of (v1) birth records"
+    items:
+      $ref: "#/definitions/v1-Birth"

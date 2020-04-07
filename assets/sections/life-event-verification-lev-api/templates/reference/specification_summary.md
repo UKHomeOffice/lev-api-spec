@@ -3,7 +3,7 @@ Navigation: Overview
 SortOrder: 0
 
 [[description]]
-A ReSTful API for verifying 'life events' such as births, deaths and marriages. (Currently only births are supported.)
+A ReSTful API for verifying 'life events' such as births, deaths and marriages.
 
 
 Getting started

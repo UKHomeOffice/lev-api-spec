@@ -57,6 +57,8 @@ tags:
   description: "Death records"
 - name: "marriage"
   description: "Marriage records"
+- name: "partnership"
+  description: "Civil partnership records"
 paths:
   /api/v0/events/birth:
     get:
@@ -563,6 +565,67 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/v1-Marriage"
+  /v1/registration/partnership:
+    get:
+      tags:
+      - "partnership"
+      - "v1"
+      - "unstable"
+      summary: "Search for civil partnership records"
+      description: "Search for civil partnership records by supplying the date of the civil partnership as well as the surname and at least the first forename of one of the partners. (UNSTABLE: This endpoint is subject to change.)"
+      operationId: "searchV1Partnership"
+      parameters:
+      - name: "forenames"
+        in: "query"
+        description: "The person's forenames. The first name must be provided but middlenames are optional."
+        required: true
+        type: "string"
+        x-example: "Joan"
+      - name: "surname"
+        in: "query"
+        description: "The person's surname."
+        required: true
+        type: "string"
+        x-example: "Smith"
+      - name: "dateOfPartnership"
+        in: "query"
+        description: "The date of the civil partnership in international format."
+        required: true
+        type: "string"
+        format: "date"
+        x-example: "2008-08-08"
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v1-Partnerships"
+  /v1/registration/partnership/{id}:
+    get:
+      tags:
+      - "partnership"
+      - "v1"
+      - "unstable"
+      summary: "Look up a specific civil partnership record"
+      description: "Look up individual civil partnership records using the `systemNumber` printed in the bottom-left of the civil partnership certificate. (UNSTABLE: This endpoint is subject to change.)"
+      operationId: "readV1Partnership"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The system number printed in the bottom-left of the civil partnership certificate"
+        required: true
+        type: "integer"
+        x-example: 123456789
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        404:
+          $ref: "#/responses/notFound"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v1-Partnership"
   /api/v0/audit/user-activity:
     get:
       summary: "Query user activity"
@@ -1377,6 +1440,154 @@ definitions:
             type: boolean
             title: "Blocked registration"
             description: Indicates if data for this record has been blocked
+  v1-Partnership:
+    type: object
+    title: "Civil partnership record (v1)"
+    description: "A record of a civil partnership"
+    required:
+      - id
+      - dateOfPartnership
+      - partner1
+      - partner2
+      - status
+    properties:
+      id:
+        type: integer
+        format: int32
+        title: "ID"
+        description: System number for this event
+      dateOfPartnership:
+        type: string
+        format: date
+        example: '2008-08-08'
+        title: "Date of civil partnership"
+        description: Date of the civil partnership
+      partner1:
+        title: "First partner"
+        description: The first partner
+        required:
+          - forenames
+          - surname
+          - condition
+        properties:
+          forenames:
+            type: string
+            example: Joan Narcissus Ouroboros
+            title: "forenames"
+            description: Forenames of the person
+          surname:
+            type: string
+            example: SMITH
+            title: "Surname"
+            description: Surname of the person
+          dateOfBirth:
+            type: string
+            format: date
+            example: '2011-08-08'
+            title: "Date of birth"
+            description: Date the person was born
+          sex:
+            type: string
+            example: Indeterminate
+            title: "Sex"
+            description: Sex of the person
+            enum:
+              - Male
+              - Female
+              - Indeterminate
+          occupation:
+            type: string
+            example: Unemployed
+            title: "Occupation"
+            description: The occupation of the person
+          retired:
+            type: boolean
+            example: false
+            title: "Retired"
+            description: Whether the person was retired
+          address:
+            type: string
+            example: '888 Groom House, 8 Groom grove, Wedford, Wedfordshire, GR0 0M'
+            title: "Address"
+            description: "The person's address"
+          condition:
+            type: string
+            example: 'Single'
+            title: "Condition"
+            description: Whether the person was single, divorced, widowed etc.
+          signature:
+            type: string
+            example: 'J.N.O. Smith'
+            title: "Signature"
+            description: "A digital representation of the person's signature"
+      partner2:
+        title: "Second partner"
+        description: The second partner
+        required:
+          - forenames
+          - surname
+          - condition
+        properties:
+          forenames:
+            type: string
+            example: Joan Narcissus Ouroboros
+            title: "forenames"
+            description: Forenames of the person
+          surname:
+            type: string
+            example: BLACK
+            title: "Surname"
+            description: Surname of the person
+          dateOfBirth:
+            type: string
+            format: date
+            example: '2011-08-08'
+            title: "Date of birth"
+            description: Date the person was born
+          sex:
+            type: string
+            example: Indeterminate
+            title: "Sex"
+            description: Sex of the person
+            enum:
+              - Male
+              - Female
+              - Indeterminate
+          occupation:
+            type: string
+            example: Unemployed
+            title: "Occupation"
+            description: The occupation of the person
+          retired:
+            type: boolean
+            example: false
+            title: "Retired"
+            description: Whether the person was retired
+          address:
+            type: string
+            example: '888 Bride House, 8 Bride grove, Wedford, Wedfordshire, BR1 2E'
+            title: "Address"
+            description: "The person's address"
+          condition:
+            type: string
+            example: 'Single'
+            title: "Condition"
+            description: Whether the person was single, divorced, widowed etc.
+          signature:
+            type: string
+            example: 'J.N.O. Black'
+            title: "Signature"
+            description: "A digital representation of the person's signature"
+      status:
+        title: "Status"
+        description: Status flags associated with this record
+        required:
+          - blocked
+        properties:
+          blocked:
+            type: boolean
+            title: "Blocked registration"
+            description: Indicates if data for this record has been blocked
   v0-Births:
     type: "array"
     title: "List of (v0) birth records"
@@ -1397,3 +1608,8 @@ definitions:
     title: "List of (v1) marriage records"
     items:
       $ref: "#/definitions/v1-Marriage"
+  v1-Partnerships:
+    type: "array"
+    title: "List of (v1) civil partnership records"
+    items:
+      $ref: "#/definitions/v1-Partnership"

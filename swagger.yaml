@@ -55,6 +55,8 @@ tags:
   description: "Birth records"
 - name: "death"
   description: "Death records"
+- name: "marriage"
+  description: "Marriage records"
 paths:
   /api/v0/events/birth:
     get:
@@ -500,6 +502,67 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/v1-Death"
+  /v1/registration/marriage:
+    get:
+      tags:
+      - "marriage"
+      - "v1"
+      - "unstable"
+      summary: "Search for marriage records"
+      description: "Search for marriage records by supplying the date of marriage as well as the surname and at least the first forename of one of the partners. (UNSTABLE: This endpoint is subject to change.)"
+      operationId: "searchV1Marriage"
+      parameters:
+      - name: "forenames"
+        in: "query"
+        description: "The person's forenames. The first name must be provided but middlenames are optional."
+        required: true
+        type: "string"
+        x-example: "Joan"
+      - name: "surname"
+        in: "query"
+        description: "The person's surname."
+        required: true
+        type: "string"
+        x-example: "Smith"
+      - name: "dateOfMarriage"
+        in: "query"
+        description: "The date of the marriage in international format."
+        required: true
+        type: "string"
+        format: "date"
+        x-example: "2008-08-08"
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v1-Marriages"
+  /v1/registration/marriage/{id}:
+    get:
+      tags:
+      - "marriage"
+      - "v1"
+      - "unstable"
+      summary: "Look up a specific marriage record"
+      description: "Look up individual marriage records using the `systemNumber` printed in the bottom-left of the marriage certificate. (UNSTABLE: This endpoint is subject to change.)"
+      operationId: "readV1Marriage"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The system number printed in the bottom-left of the marriage certificate"
+        required: true
+        type: "integer"
+        x-example: 123456789
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        404:
+          $ref: "#/responses/notFound"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v1-Marriage"
   /api/v0/audit/user-activity:
     get:
       summary: "Query user activity"
@@ -1186,6 +1249,134 @@ definitions:
             type: boolean
             title: "Blocked registration"
             description: Indicates if data for this record has been blocked
+  v1-Marriage:
+    type: object
+    title: "Marriage record (v1)"
+    description: "A record of a marriage"
+    required:
+      - id
+      - dateOfMarriage
+      - bride
+      - groom
+      - status
+    properties:
+      id:
+        type: integer
+        format: int32
+        title: "ID"
+        description: System number for this event
+      dateOfMarriage:
+        type: string
+        format: date
+        example: '2008-08-08'
+        title: "Date of marriage"
+        description: Date of the marriage
+      groom:
+        title: "Groom"
+        description: The groom (or first partner)
+        required:
+          - forenames
+          - surname
+          - condition
+        properties:
+          forenames:
+            type: string
+            example: Joan Narcissus Ouroboros
+            title: "forenames"
+            description: Forenames of the person
+          surname:
+            type: string
+            example: SMITH
+            title: "Surname"
+            description: Surname of the person
+          age:
+            type: integer
+            format: int32
+            title: "Age"
+            description: Age of the person when they got married
+          occupation:
+            type: string
+            example: Unemployed
+            title: "Occupation"
+            description: The occupation of the person
+          retired:
+            type: boolean
+            example: false
+            title: "Retired"
+            description: Whether the person was retired
+          address:
+            type: string
+            example: '888 Groom House, 8 Groom grove, Wedford, Wedfordshire, GR0 0M'
+            title: "Address"
+            description: "The person's address"
+          condition:
+            type: string
+            example: 'Single'
+            title: "Condition"
+            description: Whether the person was single, divorced, widowed etc.
+          signature:
+            type: string
+            example: 'J.N.O. Smith'
+            title: "Signature"
+            description: "A digital representation of the person's signature"
+      bride:
+        title: "Bride"
+        description: The bride (or second partner)
+        required:
+          - forenames
+          - surname
+          - condition
+        properties:
+          forenames:
+            type: string
+            example: Joan Narcissus Ouroboros
+            title: "forenames"
+            description: Forenames of the person
+          surname:
+            type: string
+            example: BLACK
+            title: "Surname"
+            description: Surname of the person
+          age:
+            type: integer
+            format: int32
+            title: "Age"
+            description: Age of the person when they got married
+          occupation:
+            type: string
+            example: Unemployed
+            title: "Occupation"
+            description: The occupation of the person
+          retired:
+            type: boolean
+            example: false
+            title: "Retired"
+            description: Whether the person was retired
+          address:
+            type: string
+            example: '888 Bride House, 8 Bride grove, Wedford, Wedfordshire, BR1 2E'
+            title: "Address"
+            description: "The person's address"
+          condition:
+            type: string
+            example: 'Single'
+            title: "Condition"
+            description: Whether the person was single, divorced, widowed etc.
+          signature:
+            type: string
+            example: 'J.N.O. Black'
+            title: "Signature"
+            description: "A digital representation of the person's signature"
+      status:
+        title: "Status"
+        description: Status flags associated with this record
+        required:
+          - blocked
+        properties:
+          blocked:
+            type: boolean
+            title: "Blocked registration"
+            description: Indicates if data for this record has been blocked
   v0-Births:
     type: "array"
     title: "List of (v0) birth records"
@@ -1201,3 +1392,8 @@ definitions:
     title: "List of (v1) death records"
     items:
       $ref: "#/definitions/v1-Death"
+  v1-Marriages:
+    type: "array"
+    title: "List of (v1) marriage records"
+    items:
+      $ref: "#/definitions/v1-Marriage"

@@ -12,5 +12,5 @@ Serve the documentation on a webserver
 --------------------------------------
 
 ```
-make listen
+make docs
 ```

@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "A ReSTful API for verifying 'life events' such as births, deaths and marriages."
-  version: "0.12.0"
+  version: "0.13.0"
   title: "Life Event Verification (LEV) API"
   contact:
     email: "levapi@digital.homeoffice.gov.uk"
@@ -1214,7 +1214,7 @@ definitions:
   v1-Death:
     type: object
     title: "Death record (v1)"
-    description: "A record of a death"
+    description: "A record of a death (Note: You will only receive the fields you are authorized to view, regardless of whether we hold them on file)"
     required:
       - id
       - date

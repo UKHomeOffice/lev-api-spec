@@ -6,6 +6,7 @@ TEST_URL="${TEST_URL:-http://localhost/}"
 OIDC_URL="${OIDC_URL}"
 USERNAME="${USERNAME:-${USER:-test}}"
 PASSWORD="${PASSWORD}"
+ROLES="birth,death,marriage,partnership,full-details"
 CLIENT_ID="${CLIENT_ID:-dredd}"
 CLIENT_SECRET="${CLIENT_SECRET}"
 WAIT="${WAIT}"
@@ -46,5 +47,5 @@ if [ -n  "${OIDC_URL}" ]; then
   ${dredd} -h "Authorization: Bearer ${token}"
 else
   echo "Starting tests..."
-  ${dredd} -h "X-Auth-Username: ${USERNAME}" -h "X-Auth-Aud: ${CLIENT_ID}"
+  ${dredd} -h "X-Auth-Username: ${USERNAME}" -h "X-Auth-Aud: ${CLIENT_ID}" -h "X-Auth-Roles: ${ROLES}"
 fi

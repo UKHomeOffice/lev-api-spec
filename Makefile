@@ -6,6 +6,7 @@ test-url = http://localhost/
 token = DUMMY
 username = $(USER)
 client = dredd
+roles = "birth,death,marriage,partnership,full-details"
 
 .PHONY: all clean dapperbox dapperbox-theme-gov-uk deps deps-docs deps-test dredd docker docker-docs docker-test docs npm test
 
@@ -23,7 +24,8 @@ test: deps-test
 	bin/dredd "./swagger.yaml" "$(test-url)" \
 	          -h "Authorization: Bearer $(token)" \
 	          -h "X-Auth-Username: $(username)" \
-	          -h "X-Auth-Aud: $(client)"
+	          -h "X-Auth-Aud: $(client)" \
+	          -h "X-Auth-Roles: $(roles)"
 
 docker: docker-docs docker-test
 

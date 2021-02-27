@@ -1037,7 +1037,7 @@ definitions:
   v0-Birth:
     type: object
     title: "Birth record (v0)"
-    description: "A record of a birth (Note: You will only receive the fields you are authorized to view, regardless of whether we hold them on file)"
+    description: "A record of a birth"
     required:
       - id
       - location
@@ -1714,22 +1714,6 @@ definitions:
             format: int32
             title: "System number"
             description: System number for this event
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   v1-Birth:
     type: object
     title: "Birth record (v1)"

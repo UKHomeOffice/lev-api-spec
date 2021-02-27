@@ -107,9 +107,7 @@ paths:
                 },
                 "subjects": {
                   "child": {
-                    "originalName": {
-              
-                    },
+                    "originalName": { },
                     "name": {
                       "givenName": "Tester One",
                       "surname": "Multiple",
@@ -141,9 +139,7 @@ paths:
                     "marriageSurname": "prev-M-Multiple"
                   },
                   "informant": {
-                    "name": {
-              
-                    },
+                    "name": { },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
                   }
@@ -159,9 +155,7 @@ paths:
                   "marginalNote": "None",
                   "reRegistered": "None"
                 },
-                "previousRegistration": {
-              
-                }
+                "previousRegistration": { }
               }, {
                 "location": {
                   "name": "Test District, Test Subdistrict, Reading",
@@ -172,9 +166,7 @@ paths:
                 },
                 "subjects": {
                   "child": {
-                    "originalName": {
-              
-                    },
+                    "originalName": { },
                     "name": {
                       "givenName": "Tester Two",
                       "surname": "Multiple",
@@ -206,9 +198,7 @@ paths:
                     "marriageSurname": "prev-M-Multiple"
                   },
                   "informant": {
-                    "name": {
-              
-                    },
+                    "name": { },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
                   }
@@ -224,9 +214,7 @@ paths:
                   "marginalNote": "None",
                   "reRegistered": "None"
                 },
-                "previousRegistration": {
-              
-                }
+                "previousRegistration": { }
               }, {
                 "location": {
                   "name": "Test District, Test Subdistrict, Reading",
@@ -237,9 +225,7 @@ paths:
                 },
                 "subjects": {
                   "child": {
-                    "originalName": {
-              
-                    },
+                    "originalName": { },
                     "name": {
                       "givenName": "Tester Three",
                       "surname": "Multiple",
@@ -271,9 +257,7 @@ paths:
                     "marriageSurname": "prev-M-Multiple"
                   },
                   "informant": {
-                    "name": {
-              
-                    },
+                    "name": { },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
                   }
@@ -289,9 +273,7 @@ paths:
                   "marginalNote": "None",
                   "reRegistered": "None"
                 },
-                "previousRegistration": {
-              
-                }
+                "previousRegistration": { }
               }]
   /api/v0/events/birth/{systemNumber}:
     get:
@@ -329,8 +311,7 @@ paths:
                 },
                 "subjects": {
                   "child": {
-                    "originalName": {
-                    },
+                    "originalName": { },
                     "name": {
                       "givenName": "Tester",
                       "surname": "Solo",
@@ -362,8 +343,7 @@ paths:
                     "marriageSurname": "prev-M-Solo"
                   },
                   "informant": {
-                    "name": {
-                    },
+                    "name": { },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
                   }
@@ -379,8 +359,380 @@ paths:
                   "marginalNote": "None",
                   "reRegistered": "None"
                 },
+                "previousRegistration": { }
+              }
+  /api/v0.1/events/birth:
+    get:
+      tags:
+        - "birth"
+        - "v0.1"
+      summary: "Search for birth records (returns `null` for fields that are not on the birth certificate)"
+      description: "Search for birth records by supplying the date of birth, surname and at least the first forename of the child."
+      operationId: "searchBirth"
+      parameters:
+        - name: "forenames"
+          in: "query"
+          description: "The child's forenames. The first name must be provided but middlenames are optional."
+          required: true
+          type: "string"
+          x-example: "Joan"
+        - name: "lastname"
+          in: "query"
+          description: "The child's surname."
+          required: true
+          type: "string"
+          x-example: "Smith"
+        - name: "dateofbirth"
+          in: "query"
+          description: "The child's date of birth in international format."
+          required: true
+          type: "string"
+          format: "date"
+          x-example: "2008-08-08"
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v0.1-Births"
+          examples:
+            application/json: >
+              [{
+                "location": {
+                  "name": "Test District, Test Subdistrict, Reading",
+                  "administrativeArea": "Reading",
+                  "subDistrict": "Test Subdistrict",
+                  "nameQualifier": "generated by concatenating registrationDistrict, subDistrict and administrativeArea",
+                  "registrationDistrict": "Test District"
+                },
+                "subjects": {
+                  "child": {
+                    "originalName": {
+                      "givenName": null,
+                      "surname": null,
+                      "fullName": null,
+                      "qualifier": null
+                    },
+                    "name": {
+                      "givenName": "Tester One",
+                      "surname": "Multiple",
+                      "fullName": "Tester One Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "dateOfBirth": "2010-01-01",
+                    "sex": "Male",
+                    "birthplace": "Test Address"
+                  },
+                  "father": {
+                    "name": {
+                      "givenName": "Dad One",
+                      "surname": "Multiple",
+                      "fullName": "Dad One Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "birthplace": "Test Birthplace",
+                    "occupation": null
+                  },
+                  "mother": {
+                    "name": {
+                      "givenName": "Mum One",
+                      "surname": "Multiple",
+                      "fullName": "Mum One Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "birthplace": "Test Birthplace",
+                    "maidenSurname": "prev-Multiple",
+                    "marriageSurname": "prev-M-Multiple",
+                    "occupation": null,
+                    "usualAddress": null
+                  },
+                  "informant": {
+                    "name": {
+                      "givenName": null,
+                      "surname": null,
+                      "fullName": null,
+                      "qualifier": null
+                    },
+                    "usualAddress": null,
+                    "qualification": "Mother",
+                    "signature": null
+                  }
+                },
+                "systemNumber": 999999901,
+                "id": 999999901,
+                "date": "2014-10-10",
+                "status": {
+                  "potentiallyFictitiousBirth": false,
+                  "correction": "None",
+                  "cancelled": false,
+                  "blockedRegistration": false,
+                  "marginalNote": "None",
+                  "reRegistered": "None"
+                },
                 "previousRegistration": {
-                }
+                  "date": 2013-10-10,
+                  "systemNumber": 888888801
+                },
+                "registrarSignature": null
+              }, {
+                "location": {
+                  "name": "Test District, Test Subdistrict, Reading",
+                  "administrativeArea": "Reading",
+                  "subDistrict": "Test Subdistrict",
+                  "nameQualifier": "generated by concatenating registrationDistrict, subDistrict and administrativeArea",
+                  "registrationDistrict": "Test District"
+                },
+                "subjects": {
+                  "child": {
+                    "originalName": {
+                      "givenName": null,
+                      "surname": null,
+                      "fullName": null,
+                      "qualifier": null
+                    },
+                    "name": {
+                      "givenName": "Tester Two",
+                      "surname": "Multiple",
+                      "fullName": "Tester Two Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "dateOfBirth": "2010-01-01",
+                    "sex": "Male",
+                    "birthplace": "Test Address"
+                  },
+                  "father": {
+                    "name": {
+                      "givenName": "Dad Two",
+                      "surname": "Multiple",
+                      "fullName": "Dad Two Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "birthplace": "Test Birthplace",
+                    "occupation": null
+                  },
+                  "mother": {
+                    "name": {
+                      "givenName": "Mum Two",
+                      "surname": "Multiple",
+                      "fullName": "Mum Two Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "birthplace": "Test Birthplace",
+                    "maidenSurname": "prev-Multiple",
+                    "marriageSurname": "prev-M-Multiple",
+                    "occupation": null,
+                    "usualAddress": null
+                  },
+                  "informant": {
+                    "name": {
+                      "givenName": null,
+                      "surname": null,
+                      "fullName": null,
+                      "qualifier": null
+                    },
+                    "usualAddress": null,
+                    "qualification": "Mother",
+                    "signature": null
+                  }
+                },
+                "systemNumber": 999999902,
+                "id": 999999902,
+                "date": "2014-10-10",
+                "status": {
+                  "potentiallyFictitiousBirth": false,
+                  "correction": "None",
+                  "cancelled": false,
+                  "blockedRegistration": false,
+                  "marginalNote": "None",
+                  "reRegistered": "None"
+                },
+                "previousRegistration": {
+                  "date": 2013-10-10,
+                  "systemNumber": 888888802
+                },
+                "registrarSignature": null
+              }, {
+                "location": {
+                  "name": "Test District, Test Subdistrict, Reading",
+                  "administrativeArea": "Reading",
+                  "subDistrict": "Test Subdistrict",
+                  "nameQualifier": "generated by concatenating registrationDistrict, subDistrict and administrativeArea",
+                  "registrationDistrict": "Test District"
+                },
+                "subjects": {
+                  "child": {
+                    "originalName": {
+                      "givenName": null,
+                      "surname": null,
+                      "fullName": null,
+                      "qualifier": null
+                    },
+                    "name": {
+                      "givenName": "Tester Three",
+                      "surname": "Multiple",
+                      "fullName": "Tester Three Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "dateOfBirth": "2010-01-01",
+                    "sex": "Male",
+                    "birthplace": "Test Address"
+                  },
+                  "father": {
+                    "name": {
+                      "givenName": "Dad Three",
+                      "surname": "Multiple",
+                      "fullName": "Dad Three Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "birthplace": "Test Birthplace",
+                    "occupation": null
+                  },
+                  "mother": {
+                    "name": {
+                      "givenName": "Mum Three",
+                      "surname": "Multiple",
+                      "fullName": "Mum Three Multiple",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "birthplace": "Test Birthplace",
+                    "maidenSurname": "prev-Multiple",
+                    "marriageSurname": "prev-M-Multiple",
+                    "occupation": null,
+                    "usualAddress": null
+                  },
+                  "informant": {
+                    "name": {
+                      "givenName": null,
+                      "surname": null,
+                      "fullName": null,
+                      "qualifier": null
+                    },
+                    "usualAddress": null,
+                    "qualification": "Mother",
+                    "signature": null
+                  }
+                },
+                "systemNumber": 999999903,
+                "id": 999999903,
+                "date": "2014-10-10",
+                "status": {
+                  "potentiallyFictitiousBirth": false,
+                  "correction": "None",
+                  "cancelled": false,
+                  "blockedRegistration": false,
+                  "marginalNote": "None",
+                  "reRegistered": "None"
+                },
+                "previousRegistration": {
+                  "date": 2013-10-10,
+                  "systemNumber": 888888803
+                },
+                "registrarSignature": null
+              }]
+  /api/v0.1/events/birth/{systemNumber}:
+    get:
+      tags:
+        - "birth"
+        - "v0.1"
+      summary: "Look up a specific birth record (returns `null` for fields that are not on the birth certificate)"
+      description: "Look up individual birth records using the `systemNumber` printed in the bottom-left of the birth certificate."
+      operationId: "readBirth"
+      parameters:
+        - name: "systemNumber"
+          in: "path"
+          description: "The system number printed in the bottom-left of the birth certificate"
+          required: true
+          type: "integer"
+          x-example: 123456789
+      responses:
+        default:
+          $ref: "#/responses/badRequest"
+        404:
+          $ref: "#/responses/notFound"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/v0.1-Birth"
+          examples:
+            application/json: >
+              {
+                "location": {
+                  "name": "Test District, Test Subdistrict, Reading",
+                  "administrativeArea": "Reading",
+                  "subDistrict": "Test Subdistrict",
+                  "nameQualifier": "generated by concatenating registrationDistrict, subDistrict and administrativeArea",
+                  "registrationDistrict": "Test District"
+                },
+                "subjects": {
+                  "child": {
+                    "originalName": {
+                      "givenName": null,
+                      "surname": null,
+                      "fullName": null,
+                      "qualifier": null
+                    },
+                    "name": {
+                      "givenName": "Tester",
+                      "surname": "Solo",
+                      "fullName": "Tester Solo",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "dateOfBirth": "2012-02-29",
+                    "sex": "Male",
+                    "birthplace": "Test Address"
+                  },
+                  "father": {
+                    "name": {
+                      "givenName": "Dad",
+                      "surname": "Solo",
+                      "fullName": "Dad Solo",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "birthplace": "Test Birthplace",
+                    "occupation": null
+                  },
+                  "mother": {
+                    "name": {
+                      "givenName": "Mum",
+                      "surname": "Solo",
+                      "fullName": "Mum Solo",
+                      "qualifier": "generated from prepending forename to surname"
+                    },
+                    "birthplace": "Test Birthplace",
+                    "maidenSurname": "prev-Solo",
+                    "marriageSurname": "prev-M-Solo",
+                    "occupation": null,
+                    "usualAddress": null
+                  },
+                  "informant": {
+                    "name": {
+                      "givenName": null,
+                      "surname": null,
+                      "fullName": null,
+                      "qualifier": null
+                    },
+                    "usualAddress": null,
+                    "qualification": "Mother",
+                    "signature": null
+                  }
+                },
+                "systemNumber": 999999910,
+                "id": 999999910,
+                "date": "2014-10-10",
+                "status": {
+                  "potentiallyFictitiousBirth": false,
+                  "correction": "None",
+                  "cancelled": false,
+                  "blockedRegistration": false,
+                  "marginalNote": "None",
+                  "reRegistered": "None"
+                },
+                "previousRegistration": {
+                  "date": 2013-10-10,
+                  "systemNumber": 888888810
+                },
+                "registrarSignature": null
               }
   /v1/registration/birth:
     get:
@@ -685,7 +1037,7 @@ definitions:
   v0-Birth:
     type: object
     title: "Birth record (v0)"
-    description: "A record of a birth (Note: You will only receive the fields you are authorized to view, regardless of whether we hold them on file)"
+    description: "A record of a birth"
     required:
       - id
       - location
@@ -802,6 +1154,346 @@ definitions:
                   givenName:
                     type: string
                     example: Joan Narcissus Ouroboros
+                    title: "Given name"
+                    description: Given name of the person
+                  surname:
+                    type: string
+                    example: Smith
+                    title: "Surname"
+                    description: Surname of the person
+                  fullName:
+                    type: string
+                    example: Joan Narcissus Ouroboros Smith
+                    title: "Full name"
+                    description: Full name of the person
+                  qualifier:
+                    type: string
+                    example: generated from prepending forename to surname
+                    title: "Qualifier"
+                    description: Details about how the full name was made
+          father:
+            title: "Father"
+            description: Father
+            properties:
+              name:
+                title: "Name"
+                description: Name of the person
+                properties:
+                  givenName:
+                    type: string
+                    example: Joan Narcissus Ouroboros
+                    title: "Given name"
+                    description: Given name of the person
+                  surname:
+                    type: string
+                    example: Smith
+                    title: "Surname"
+                    description: Surname of the person
+                  fullName:
+                    type: string
+                    example: Joan Narcissus Ouroboros Smith
+                    title: "Full name"
+                    description: Full name of the person
+                  qualifier:
+                    type: string
+                    example: generated from prepending forename to surname
+                    title: "Qualifier"
+                    description: Details about how the full name was made
+              birthplace:
+                type: string
+                example: Kensington
+                title: "Birthplace"
+                description: The birthplace of the person
+              occupation:
+                type: string
+                example: Carpenter
+                title: "Occupation"
+                description: The occupation of the parent
+          mother:
+            title: "Mother"
+            description: Mother
+            properties:
+              name:
+                title: "Name"
+                description: Name of the person
+                properties:
+                  givenName:
+                    type: string
+                    example: Joan Narcissus Ouroboros
+                    title: "Given name"
+                    description: Given name of the person
+                  surname:
+                    type: string
+                    example: Smith
+                    title: "Surname"
+                    description: Surname of the person
+                  fullName:
+                    type: string
+                    example: Joan Narcissus Ouroboros Smith
+                    title: "Full name"
+                    description: Full name of the person
+                  qualifier:
+                    type: string
+                    example: generated from prepending forename to surname
+                    title: "Qualifier"
+                    description: Details about how the full name was made
+              birthplace:
+                type: string
+                example: Kensington
+                title: "Birthplace"
+                description: The birthplace of the person
+              occupation:
+                type: string
+                example: Carpenter
+                title: "Occupation"
+                description: The occupation of the parent
+              maidenSurname:
+                type: string
+                example: Black
+                title: "Maiden surname"
+                description: Maiden surname
+              marriageSurname:
+                type: string
+                example: White
+                title: "Marriage surname"
+                description: Surname at marriage if different from maiden surname
+              usualAddress:
+                type: string
+                example: '34 Matriarchs Place, Mumstown, Mumford'
+                title: "Usual address"
+                description: "Usual address (if different from the place of child's birth)"
+          informant:
+            title: "Informant"
+            description: Informant
+            properties:
+              name:
+                title: "Name"
+                description: Name of the person
+                properties:
+                  givenName:
+                    type: string
+                    example: Joan Narcissus Ouroboros
+                    title: "Given name"
+                    description: Given name of the person
+                  surname:
+                    type: string
+                    example: Smith
+                    title: "Surname"
+                    description: Surname of the person
+                  fullName:
+                    type: string
+                    example: Joan Narcissus Ouroboros Smith
+                    title: "Full name"
+                    description: Full name of the person
+                  qualifier:
+                    type: string
+                    example: generated from prepending forename to surname
+                    title: "Qualifier"
+                    description: Details about how the full name was made
+              usualAddress:
+                type: string
+                example: '34 Matriarchs Place, Mumstown, Mumford'
+                title: "Usual address"
+                description: 'The usual address of the person, if different from the mother''s'
+              qualification:
+                type: string
+                example: Mother
+                title: "Qualification"
+                description: The qualification of the informant
+              signature:
+                type: string
+                example: J. Smith
+                title: "Signature"
+                description: The signature of the informant
+      systemNumber:
+        type: integer
+        format: int32
+        title: "System number"
+        description: System number for this event
+      status:
+        title: "Status"
+        description: Status flags associated with this birth
+        properties:
+          blockedRegistration:
+            type: boolean
+            title: "Blocked registration"
+            description: Indicates if data for this record has been blocked
+          cancelled:
+            type: boolean
+            title: "Cancelled"
+            description: Indicates if record was cancelled
+          potentiallyFictitiousBirth:
+            type: boolean
+            title: "Potentially fictitious birth"
+            description: Indicates if a birth may be fictitious
+          reRegistered:
+            type: string
+            title: "Re-registered"
+            description: Describes if this is a re-registration and why it was needed
+            enum:
+              - None
+              - Father modified
+              - Father added
+              - Replacement registration
+              - Other
+              - Subsequently married
+          correction:
+            type: string
+            title: "Correction"
+            description: Indicates if there has been a correction to this record
+            enum:
+              - Typographical
+              - Simple clerical
+              - Complex clerical
+              - Error of fact
+              - None
+          marginalNote:
+            type: string
+            title: "Marginal note"
+            description: Gives additional notes on a record
+            enum:
+              - Re-registered
+              - Court order in place
+              - Court order revoked
+              - Other
+              - None
+        required:
+          - blockedRegistration
+      previousRegistration:
+        title: "Previous registration"
+        description: 'Details of the previous record, where one exists'
+        properties:
+          date:
+            type: string
+            format: date
+            example: '2011-08-09'
+            title: "Date"
+            description: Date of the event
+          systemNumber:
+            type: integer
+            format: int32
+            title: "System number"
+            description: System number for this event
+  v0.1-Birth:
+    type: object
+    title: "Birth record (v0.1)"
+    description: "A record of a birth (Note: You will only receive the fields you are authorized to view, otherwise `null`)"
+    required:
+      - id
+      - location
+      - previousRegistration
+      - status
+      - subjects
+    properties:
+      date:
+        type: string
+        format: date
+        example: '2011-08-09'
+        title: "Date"
+        description: Date of the event
+      location:
+        title: "Location"
+        description: Location that the event happened at
+        properties:
+          name:
+            type: string
+            example: 'Manchester, Manchester, Metropolitan District of Manchester'
+            title: "Name"
+            description: Name
+          nameQualifier:
+            type: string
+            example: 'generated by concatenating registrationDistrict, subDistrict and administrativeArea'
+            title: "Name qualifier"
+            description: Name qualifier
+          registrationDistrict:
+            type: string
+            example: Manchester
+            title: "Registration district"
+            description: Registration district
+          subDistrict:
+            type: string
+            example: Manchester
+            title: "Sub-district"
+            description: Sub-district
+          administrativeArea:
+            type: string
+            example: Metropolitan District of Manchester
+            title: "Administrative area"
+            description: Administrative area
+      registrarSignature:
+        type: string
+        example: J. Smith
+        title: "Registrar signature"
+        description: Signature of registrar
+      type:
+        type: string
+        example: birth
+        title: "Type"
+        description: Type of the event
+      id:
+        type: integer
+        format: int32
+        title: "ID"
+        description: Unique ID for this event
+      subjects:
+        title: "Subjects"
+        description: 'People involved, may have keys parent1,parent2,child'
+        properties:
+          child:
+            title: "Child"
+            description: Child
+            properties:
+              name:
+                title: "Name"
+                description: Name of the person
+                properties:
+                  givenName:
+                    type: string
+                    example: Joan Narcissus Ouroboros
+                    title: "Given name"
+                    description: Given name of the person
+                  surname:
+                    type: string
+                    example: Smith
+                    title: "Surname"
+                    description: Surname of the person
+                  fullName:
+                    type: string
+                    example: Joan Narcissus Ouroboros Smith
+                    title: "Full name"
+                    description: Full name of the person
+                  qualifier:
+                    type: string
+                    example: generated from prepending forename to surname
+                    title: "Qualifier"
+                    description: Details about how the full name was made
+              birthplace:
+                type: string
+                example: Kensington
+                title: "Birthplace"
+                description: The birthplace of the person
+              dateOfBirth:
+                type: string
+                format: date
+                example: '2011-08-08'
+                title: "Date of birth"
+                description: Date of birth of the person
+              sex:
+                type: string
+                example: Indeterminate
+                title: "Sex"
+                description: Sex of the person
+                enum:
+                  - Male
+                  - Female
+                  - Indeterminate
+              originalName:
+                title: "Original name"
+                description: The name originally given to the person
+                properties:
+                  givenName:
+                    type: string
+                    example: Maggie
                     title: "Given name"
                     description: Given name of the person
                   surname:
@@ -1593,6 +2285,11 @@ definitions:
     title: "List of (v0) birth records"
     items:
       $ref: "#/definitions/v0-Birth"
+  v0.1-Births:
+    type: "array"
+    title: "List of (v0.1) birth records"
+    items:
+      $ref: "#/definitions/v0.1-Birth"
   v1-Births:
     type: "array"
     title: "List of (v1) birth records"

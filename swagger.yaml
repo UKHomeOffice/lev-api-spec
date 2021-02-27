@@ -107,9 +107,7 @@ paths:
                 },
                 "subjects": {
                   "child": {
-                    "originalName": {
-
-                    },
+                    "originalName": { },
                     "name": {
                       "givenName": "Tester One",
                       "surname": "Multiple",
@@ -141,9 +139,7 @@ paths:
                     "marriageSurname": "prev-M-Multiple"
                   },
                   "informant": {
-                    "name": {
-
-                    },
+                    "name": { },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
                   }
@@ -159,9 +155,7 @@ paths:
                   "marginalNote": "None",
                   "reRegistered": "None"
                 },
-                "previousRegistration": {
-
-                }
+                "previousRegistration": { }
               }, {
                 "location": {
                   "name": "Test District, Test Subdistrict, Reading",
@@ -172,9 +166,7 @@ paths:
                 },
                 "subjects": {
                   "child": {
-                    "originalName": {
-
-                    },
+                    "originalName": { },
                     "name": {
                       "givenName": "Tester Two",
                       "surname": "Multiple",
@@ -206,9 +198,7 @@ paths:
                     "marriageSurname": "prev-M-Multiple"
                   },
                   "informant": {
-                    "name": {
-
-                    },
+                    "name": { },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
                   }
@@ -224,9 +214,7 @@ paths:
                   "marginalNote": "None",
                   "reRegistered": "None"
                 },
-                "previousRegistration": {
-
-                }
+                "previousRegistration": { }
               }, {
                 "location": {
                   "name": "Test District, Test Subdistrict, Reading",
@@ -237,9 +225,7 @@ paths:
                 },
                 "subjects": {
                   "child": {
-                    "originalName": {
-
-                    },
+                    "originalName": { },
                     "name": {
                       "givenName": "Tester Three",
                       "surname": "Multiple",
@@ -271,9 +257,7 @@ paths:
                     "marriageSurname": "prev-M-Multiple"
                   },
                   "informant": {
-                    "name": {
-
-                    },
+                    "name": { },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
                   }
@@ -289,9 +273,7 @@ paths:
                   "marginalNote": "None",
                   "reRegistered": "None"
                 },
-                "previousRegistration": {
-
-                }
+                "previousRegistration": { }
               }]
   /api/v0/events/birth/{systemNumber}:
     get:
@@ -329,8 +311,7 @@ paths:
                 },
                 "subjects": {
                   "child": {
-                    "originalName": {
-                    },
+                    "originalName": { },
                     "name": {
                       "givenName": "Tester",
                       "surname": "Solo",
@@ -362,8 +343,7 @@ paths:
                     "marriageSurname": "prev-M-Solo"
                   },
                   "informant": {
-                    "name": {
-                    },
+                    "name": { },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
                   }
@@ -379,8 +359,7 @@ paths:
                   "marginalNote": "None",
                   "reRegistered": "None"
                 },
-                "previousRegistration": {
-                }
+                "previousRegistration": { }
               }
   /api/v0.1/events/birth:
     get:

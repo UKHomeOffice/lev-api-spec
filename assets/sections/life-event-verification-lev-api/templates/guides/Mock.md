@@ -27,13 +27,13 @@ The API can then be accessed on [localhost] over plain HTTP, rather than HTTPS.
 
 In a terminal:
 
-* Start a shell in a running docker container.
+* Start a shell in a running docker container:
 
 ```bash
 docker exec -it  lev-api-mock
 ```
 
-* List the files within the mock directory
+* List the files within the mock directory:
 
 ```bash
 ls mock/
@@ -45,7 +45,7 @@ death_registration_v1.json        partnership_registration_v1.json
 Note: The files will be the latest versions of the [API Mock Data]. You can also add your own json files to test your 
 own requirements.
 
-* Search of list of available id's within the relevant file.
+* Search of list of available id's within the relevant file:
 
 ```bash
 grep "id" mock/{file}
@@ -56,7 +56,7 @@ grep "id" mock/{file}
 "id": 999999910
 ```
 
-* Exit the container
+* Exit the container:
 
 ```bash
 exit

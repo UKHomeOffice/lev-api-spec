@@ -5,7 +5,7 @@ It is possible to run and test against a mock version of the API as follows:
 ## Starting the mock
 
 ```bash
-docker run -p 80:8080 --env 'MOCK=true' quay.io/ukhomeofficedigital/lev-api:latest
+docker run --name 'lev-api-mock' -p 80:8080 --env 'MOCK=true' quay.io/ukhomeofficedigital/lev-api:latest
 ```
 
 The API can then be accessed on [localhost] over plain HTTP, rather than HTTPS.
@@ -27,22 +27,13 @@ The API can then be accessed on [localhost] over plain HTTP, rather than HTTPS.
 
 In a terminal:
 
-* Identify the api container name or id.
-
-```
-docker ps --format 'table {{.Image}}\t{{.ID}}\t{{.Names}}'
-
-IMAGE                                        CONTAINER ID   NAMES
-quay.io/ukhomeofficedigital/lev-api:latest   9c47f1200ea9   container_name
-```
-
 * Start a shell in a running docker container.
 
 ```bash
-docker exec -it {container name or id}
+docker exec -it  lev-api-mock
 ```
 
-* List the files within the mock directory.
+* List the files within the mock directory
 
 ```bash
 ls mock/
@@ -51,6 +42,8 @@ birth_registration_v0.json        lev_audit.json
 birth_registration_v1.json        marriage_registration_v1.json
 death_registration_v1.json        partnership_registration_v1.json
 ```
+Note: The files will be the latest versions of the [API Mock Data]. You can also add your own json files to test your 
+own requirements.
 
 * Search of list of available id's within the relevant file.
 
@@ -79,3 +72,4 @@ curl -s -H 'x-auth-username: test' -H 'x-auth-aud: test' 'http://localhost/v1/re
 [localhost]: http://localhost/
 [Semantic versioning]: https://semver.org/
 [Authenticating against the mock]: ./Authentication#authenticating-against-the-mock
+[API Mock Data]: https://github.com/UKHomeOffice/lev-api/tree/master/mock

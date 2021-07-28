@@ -67,7 +67,7 @@ Once you have an access token, you can make requests to the API as follows:
 curl -i \
      --cert './PATH/TO/YOUR-CLIENT.crt' \
      --key './PATH/TO/YOUR-CLIENT.key' \
-     -H 'Authorization: Bearer YOUR_TOKEN' \
+     -H "Authorization: Bearer YOUR_TOKEN" \
      'https://api.lev.homeoffice.gov.uk/api/v0/events/birth?forenames=John&lastname=Smith&dateofbirth=2010-01-01'
 ```
 

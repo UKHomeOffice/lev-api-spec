@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:12-alpine
 
 RUN apk add -q --no-cache bash curl jq \
  && apk upgrade -q --no-cache

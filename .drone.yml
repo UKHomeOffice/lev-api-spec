@@ -1,34 +1,95 @@
-matrix:
-  NAME:
-    - docs
-    - test
-  NAME_PREFIX:
-    - ukhomeofficedigital/lev-api-
-  DOCKER_USERNAME:
-    - ukhomeofficedigital+lev_api_spec
-  DOCKER_REPO:
-    - quay.io
-pipeline:
-  deps:
-    image: quay.io/ukhomeofficedigital/lev-ci
-    commands:
-      - make deps-${NAME}
-    when:
-      event: [ pull_request, tag ]
-  build_image:
-    image: ukhomeoffice/drone-docker
-    dockerfile: '${NAME}.Dockerfile'
-    repo: '${DOCKER_REPO}/${NAME_PREFIX}${NAME}'
+---
+kind: pipeline
+name: docs
+type: kubernetes
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: deps
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/lev-ci
+  commands:
+  - make deps-docs
+  when:
+    event:
+    - pull_request
+    - tag
+
+- name: build_image
+  pull: if-not-exists
+  image: plugins/docker
+  settings:
+    dockerfile: docs.Dockerfile
     dry_run: true
-    when:
-      event: pull_request
-  push_image:
-    image: ukhomeoffice/drone-docker
-    dockerfile: '${NAME}.Dockerfile'
-    repo: '${DOCKER_REPO}/${NAME_PREFIX}${NAME}'
+    repo: quay.io/ukhomeofficedigital/lev-api-docs
+  when:
+    event:
+    - pull_request
+
+- name: push_image
+  pull: if-not-exists
+  image: plugins/docker
+  settings:
     auto_tag: true
-    secrets: [ docker_password ]
-    username: '${DOCKER_USERNAME}'
-    registry: '${DOCKER_REPO}'
-    when:
-      event: tag
+    dockerfile: docs.Dockerfile
+    registry: quay.io
+    repo: quay.io/ukhomeofficedigital/lev-api-docs
+    username: ukhomeofficedigital+lev_api_spec
+  environment:
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+  when:
+    event:
+    - tag
+
+---
+kind: pipeline
+name: test
+type: kubernetes
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: deps
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/lev-ci
+  commands:
+  - make deps-test
+  when:
+    event:
+    - pull_request
+    - tag
+
+- name: build_image
+  pull: if-not-exists
+  image: plugins/docker
+  settings:
+    dockerfile: test.Dockerfile
+    dry_run: true
+    repo: quay.io/ukhomeofficedigital/lev-api-test
+  when:
+    event:
+    - pull_request
+
+- name: push_image
+  pull: if-not-exists
+  image: plugins/docker
+  settings:
+    auto_tag: true
+    dockerfile: test.Dockerfile
+    registry: quay.io
+    repo: quay.io/ukhomeofficedigital/lev-api-test
+    username: ukhomeofficedigital+lev_api_spec
+  environment:
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+  when:
+    event:
+    - tag
+
+...

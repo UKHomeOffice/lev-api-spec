@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "A ReSTful API for verifying 'life events' such as births, deaths and marriages."
-  version: "0.16.0"
+  version: "0.18.0"
   title: "Life Event Verification (LEV) API"
   contact:
     email: "levapi@digital.homeoffice.gov.uk"
@@ -108,7 +108,7 @@ paths:
                 "subjects": {
                   "child": {
                     "originalName": {
-              
+
                     },
                     "name": {
                       "givenName": "Tester One",
@@ -142,7 +142,7 @@ paths:
                   },
                   "informant": {
                     "name": {
-              
+
                     },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
@@ -160,7 +160,7 @@ paths:
                   "reRegistered": "None"
                 },
                 "previousRegistration": {
-              
+
                 }
               }, {
                 "location": {
@@ -173,7 +173,7 @@ paths:
                 "subjects": {
                   "child": {
                     "originalName": {
-              
+
                     },
                     "name": {
                       "givenName": "Tester Two",
@@ -207,7 +207,7 @@ paths:
                   },
                   "informant": {
                     "name": {
-              
+
                     },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
@@ -225,7 +225,7 @@ paths:
                   "reRegistered": "None"
                 },
                 "previousRegistration": {
-              
+
                 }
               }, {
                 "location": {
@@ -238,7 +238,7 @@ paths:
                 "subjects": {
                   "child": {
                     "originalName": {
-              
+
                     },
                     "name": {
                       "givenName": "Tester Three",
@@ -272,7 +272,7 @@ paths:
                   },
                   "informant": {
                     "name": {
-              
+
                     },
                     "qualification": "Mother",
                     "signature": "Mary Manzarek"
@@ -290,7 +290,7 @@ paths:
                   "reRegistered": "None"
                 },
                 "previousRegistration": {
-              
+
                 }
               }]
   /api/v0/events/birth/{systemNumber}:

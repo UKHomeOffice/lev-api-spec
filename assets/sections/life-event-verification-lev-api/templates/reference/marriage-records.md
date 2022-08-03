@@ -5,5 +5,5 @@ Look up and search for marriage records. Individual marriage records can be look
 
 Note: [You will only receive the fields you are authorized to view][viewableData], regardless of whether we hold them on file and the [JSON schema].
 
-[viewableData]: ../guides/ViewableData
+[viewableData]: ../guides/Viewable Data
 [JSON schema]: ../resources/marriage-record-v1

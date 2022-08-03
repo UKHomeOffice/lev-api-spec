@@ -5,5 +5,5 @@ Look up and search for civil partnership records. Individual civil partnership r
 
 Note: [You will only receive the fields you are authorized to view][viewableData], regardless of whether we hold them on file and the [JSON schema].
 
-[viewableData]: ../guides/ViewableData
+[viewableData]: ../guides/Viewable Data
 [JSON schema]: ../resources/civil-partnership-record-v1

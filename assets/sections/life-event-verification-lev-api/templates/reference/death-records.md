@@ -5,5 +5,5 @@ Look up and search for death records. Individual death records can be looked up 
 
 Note: [You will only receive the fields you are authorized to view][viewableData], regardless of whether we hold them on file and the [JSON schema].
 
-[viewableData]: ../guides/Viewable Data
+[viewableData]: ../guides/Viewable%20Data
 [JSON schema]: ../resources/death-record-v1

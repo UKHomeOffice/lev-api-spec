@@ -5,6 +5,6 @@ Look up and search for birth records. Individual birth records can be looked up 
 
 Note: [You will only receive the fields you are authorized to view][viewableData], regardless of whether we hold them on file or the relevant JSON schemas - [V0] / [V1].
 
-[viewableData]: ../guides/Viewable Data
+[viewableData]: ../guides/Viewable%20Data
 [V0]: ../resources/birth-record-v0
 [V1]: ../resources/birth-record-v1

@@ -24,7 +24,7 @@ test: deps-test
 	bin/dredd "./swagger.yaml" "$(test-url)" \
 	          -h "Authorization: Bearer $(token)" \
 	          -h "X-Auth-Username: $(username)" \
-	          -h "X-Auth-Aud: $(client)" \
+	          -h "x-original-client: $(client)" \
 	          -h "X-Auth-Roles: $(roles)"
 
 docker: docker-docs docker-test

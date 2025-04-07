@@ -78,7 +78,7 @@ Authenticating against the mock
 
 If you wish to test your client against the [mock API] then you might also want to send the following headers:
 
-* `X-Auth-Aud`: The name of your client.
+* `x-original-client`: The name of your client.
 * `X-Auth-Username`: The user your client is currently serving.
 
 Both of these can simply be set to dummy values to ease testing. The client certificate and bearer token are not required.

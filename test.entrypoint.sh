@@ -47,5 +47,5 @@ if [ -n  "${OIDC_URL}" ]; then
   ${dredd} -h "Authorization: Bearer ${token}"
 else
   echo "Starting tests..."
-  ${dredd} -h "X-Auth-Username: ${USERNAME}" -h "X-Auth-Aud: ${CLIENT_ID}" -h "X-Auth-Roles: ${ROLES}"
+  ${dredd} -h "X-Auth-Username: ${USERNAME}" -h "x-original-client: ${CLIENT_ID}" -h "X-Auth-Roles: ${ROLES}"
 fi

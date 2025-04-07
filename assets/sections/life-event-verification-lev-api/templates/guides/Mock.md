@@ -18,7 +18,7 @@ The API can then be accessed on [localhost] over plain HTTP, rather than HTTPS.
 
 **Note:** You won't need to supply a OAuth2 bearer token nor a client certificate to the mock but you will need to supply the following dummy headers:
 
-* `X-Auth-Aud: YOUR_CLIENT_HERE`
+* `x-original-client: YOUR_CLIENT_HERE`
 * `X-Auth-Username: SOME_USER`
 
 (See [Authenticating against the mock] for more details.)
@@ -66,7 +66,7 @@ exit
 Once the API is running locally, and a valid test record ID has been obtained, a request to the mock can be sent:
 
 ```bash
-curl -s -H 'x-auth-username: test' -H 'x-auth-aud: test' 'http://localhost/v1/registration/{dataset}/{ID}'
+curl -s -H 'x-auth-username: test' -H 'x-original-client: test' 'http://localhost/v1/registration/{dataset}/{ID}'
 ```
 
 [localhost]: http://localhost/

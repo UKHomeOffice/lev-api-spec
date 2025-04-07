@@ -31,7 +31,7 @@ securityDefinitions:
   mockHeaderClient:
     type: apiKey
     description: "Dummy header representing the client, required only by the mock"
-    name: "X-Auth-Aud"
+    name: "x-original-client"
     in: header
 security:
 - bearerToken: []

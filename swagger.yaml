@@ -626,43 +626,6 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/v1-Partnership"
-  /api/v0/audit/user-activity:
-    get:
-      summary: "Query user activity"
-      description: ""
-      operationId: "searchActivity"
-      parameters:
-      - name: "from"
-        in: "query"
-        description: "The beginning of the timespan to search"
-        required: false
-        type: "string"
-        format: "date"
-        x-example: "2017-01-01"
-      - name: "to"
-        in: "query"
-        description: "The end of the timespan to search"
-        required: false
-        type: "string"
-        format: "date"
-        x-example: "2017-12-31"
-      responses:
-        default:
-          $ref: "#/responses/badRequest"
-        200:
-          description: "successful operation"
-          schema:
-            type: object
-          examples:
-            application/json: >
-              {
-                "test": {
-                  "2017-01-01": 2
-                }
-              }
-      security:
-      - bearerToken:
-        - "audit"
 definitions:
   generalError:
     type: object
